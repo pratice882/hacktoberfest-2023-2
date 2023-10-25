@@ -1,0 +1,36 @@
+Given 2 integers n and r. You task is to calculate nCr%1000003.
+ 
+
+Example 1:
+
+Input: n = 5, r = 2
+Output: 10
+Explanation: 5C2 = 5! / (2! * 3!) = 10
+
+
+def nCrModp(n, r, p):
+    if r == 0:
+        return 1
+    
+    # Calculate factorial of n
+    fact = [0] * (n + 1)
+    fact[0] = 1
+    for i in range(1, n + 1):
+        fact[i] = (fact[i - 1] * i) % p
+    
+    # Calculate the modular inverse of r! and (n-r)!
+    inv_fact_r = pow(fact[r], p - 2, p)
+    inv_fact_n_r = pow(fact[n - r], p - 2, p)
+    
+    # Calculate nCr modulo p
+    nCr = (fact[n] * inv_fact_r) % p
+    nCr = (nCr * inv_fact_n_r) % p
+    
+    return nCr
+
+# Example
+n = 5
+r = 2
+p = 1000003
+result = nCrModp(n, r, p)
+print(result)
